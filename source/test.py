@@ -1,58 +1,39 @@
-ASCII_RANGE = range(33,127)
+#ASCII_RANGE = range(33,127)
+ASCII_MAX = 127
+ASCII_MIN = 33
+ASCII_RANGE = range(ASCII_MIN,ASCII_MAX)
+
 
 def main():
-    #printASCII()
-    modulo3()
-    #print("Hello")
 
+    # printASCII()
 
-def modulo():
-    for i in range(30):
-        # Require mode 8 starting at 4
-        c=i+4
-        c=c%(8+4)
-        if c == 0:
-            c = 4
-        print(c)
+    for c in ASCII_RANGE:
+        e = encode(c,1)
+        d = decode(e,1)
+        print(c, chr(c), e, chr(e), end=" ")
+        print(d, chr(d))
 
-def modulo3():
-    # Require mod 94 starting at 33
-    for i in range(300):
-        c=i
-        #print(i, c, end=" ")
-        c=c%(120+4)
-        print(c, end=" ")
-        if c == 0:
-            c = 15
-        print(c)
+# Note for functions encode and decode seed is an integer between 1 and 99
+def encode(c,seed):
+    c = c + seed
+    if c > ASCII_MAX:
+        #c = ASCII_MIN + c - ASCII_MAX
+        c = c + (ASCII_MIN - ASCII_MAX)
+    return c
 
-
-
-def modulo1():
-    for i in range(300):
-        c=i+33
-        c=c%(95+33)
-        if c == 0:
-            c=33
-        print(c, chr(c))
-    
-def modulo2(): 
-    for i in range(300):
-        c=i+33
-        c=c%(127) 
-        if c == 0:
-            c = c+33 
-        print(c)  
-
-
-
+def decode(c,seed):
+    c = c - seed
+    if c < ASCII_MIN:
+        #c = ASCII_MAX + c - ASCII_MIN
+        c = c + (ASCII_MAX - ASCII_MIN)
+    return c
 
 def printASCII():
-    print("Hello from main")
-    print("Begin")
+    print("Begin ASCII Table")
     for c in ASCII_RANGE:
         print(c, chr(c))
-    print("End")
+    print("End ASCII Table")
 
 
 if __name__ == "__main__":
