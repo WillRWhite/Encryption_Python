@@ -1,18 +1,43 @@
-#ASCII_RANGE = range(33,127)
-ASCII_MAX = 127
-ASCII_MIN = 33
+import sys
+
+#ASCII_RANGE = range(33,126)
+ASCII_MAX = 126
+ASCII_MIN = 32
 ASCII_RANGE = range(ASCII_MIN,ASCII_MAX)
 
 
 def main():
 
-    # printASCII()
+    #inputFile = input("What is the name of the input file: ")
+    #outputFile = input("What is the name of the output file: ")
 
-    for c in ASCII_RANGE:
-        e = encode(c,1)
-        d = decode(e,1)
-        print(c, chr(c), e, chr(e), end=" ")
-        print(d, chr(d))
+    seed = 10
+    coding = "d"
+
+    #inFile=open("infile.txt", "r")
+    #outFile = open("outfile.txt", 'w')
+
+    inFile=open("outfile.txt", "r")
+    outFile = open("outfile2.txt", 'w')
+
+
+
+    if coding == "e":
+        while True:
+            char = inFile.read(1)
+            if not char:
+                break
+            char = encode(ord(char),seed)
+            outFile.write(chr(char))
+    else:
+        while True:
+            char = inFile.read(1)
+            if not char:
+                break
+            char = decode(ord(char),seed)
+            outFile.write(chr(char))
+
+
 
 # Note for functions encode and decode seed is an integer between 1 and 99
 def encode(c,seed):
@@ -34,6 +59,15 @@ def printASCII():
     for c in ASCII_RANGE:
         print(c, chr(c))
     print("End ASCII Table")
+
+def test():
+    # printASCII()
+    for c in ASCII_RANGE:
+        e = encode(c,10)
+        d = decode(e,10)
+        print(c, chr(c), e, chr(e), end=" ")
+        print(d, chr(d))
+
 
 
 if __name__ == "__main__":
