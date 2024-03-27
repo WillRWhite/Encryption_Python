@@ -3,6 +3,7 @@ ASCII_RANGE = range(33,127)
 def main():
     #printASCII()
     modulo3()
+    #print("Hello")
 
 
 def modulo():
@@ -17,8 +18,10 @@ def modulo():
 def modulo3():
     # Require mod 94 starting at 33
     for i in range(300):
-        c=i+15
+        c=i
+        #print(i, c, end=" ")
         c=c%(120+4)
+        print(c, end=" ")
         if c == 0:
             c = 15
         print(c)
