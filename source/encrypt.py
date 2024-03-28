@@ -1,6 +1,7 @@
 import sys
 
 # Constants
+##########################################
 # Max of ASCII range supported
 ASCII_MAX = 126
 # Min of ASCII range supported
@@ -10,10 +11,14 @@ ASCII_RANGE = range(ASCII_MIN,ASCII_MAX)
 LF = chr(10)
 # Carrage return character
 CR = chr(13)
+##########################################
 
 def main() -> int:
 
-    if len(sys.argv) < 5:
+    # Get user input
+    if len(sys.argv) == 2 and sys.argv[1] in ["help","-help","--help","/help","h","-h","--h","/h"]:
+        printUsage()
+    elif len(sys.argv) < 5:
         try:
             encoding: str = input("Encode (e) or decode (d): ")
             seed: int = int(input("What is the seed (an int from 1 to 50): "))
@@ -29,29 +34,40 @@ def main() -> int:
             outputFileName = sys.argv[4]
         except:
             printUsage()
-
-    #encoding: str = "d"
-    #seed: int = 10
-
-    #inputFile = input("What is the name of the input file: ")
-    #outputFile = input("What is the name of the output file: ")
-    #inFile=open("infile.txt", "r")
-    #outFile = open("outfile.txt", 'w')
-
+    
     # Open input and output files
-    inFile = open(inputFileName, "r")
+    try:
+        inFile = open(inputFileName, "r")
+    except:
+        print()
+        print("Input file", inputFileName, "not found")
+        sys.exit("File not found")
+
     outFile = open(outputFileName, 'w')
 
-    # Encode the file
+    # Confirm input from user
+    print("\n")
     if encoding == "e":
+        print("Mode - encrypting", inputFileName)
+    else:
+        print("Mode - decrypting", inputFileName)
+    print("Cipher seed:", seed)
+    print("Input file:", inputFileName)
+    print("Output file:", outputFileName)
+
+    # Encode the inFile
+    if encoding == "e":
+        print("\nEncoding", inputFileName,"to",outputFileName )
         while True:
             char = inFile.read(1)
             if not char:
                 break
             char = encode(char,seed)
             outFile.write(char)
-    # Decode the file
-    else
+            
+    # Decode the inFile
+    else:
+        print("\nDecoding", inputFileName,"to",outputFileName )
         while True:
             char = inFile.read(1)
             if not char:
@@ -86,7 +102,7 @@ def decode(c: str, seed: int) -> str:
         c = c + (ASCII_MAX - ASCII_MIN)
     return chr(c)
 
-def printASCII():
+def printASCII() -> None:
     # Print the ASCII table used
     # Test function not required for release
     print("Begin ASCII Table")
@@ -94,7 +110,7 @@ def printASCII():
         print(c, chr(c))
     print("End ASCII Table")
 
-def test():
+def test() -> None:
     # Test function not required for release
     for c in ASCII_RANGE:
         e = encode(c,10)
@@ -102,18 +118,22 @@ def test():
         print(c, chr(c), e, chr(e), end=" ")
         print(d, chr(d))
 
-def printUsage():
+def printUsage() -> None:
     # Usage instructions
     print(" ")
     print("Usage:-")
-    print("     code fn seed infile outfile")
-    print(" ")
+    print("     Interactive mode:")
+    print("        python encrypt.py")
+    print()
+    print("      Commandl ine parameters:")
+    print("         python encrypt.py <encode/decode> <seed> <inputFileName> <outputFileName>")
+    print()
     print("          encode/decode: 'e' = encode message file, 'd' = decode message file")
-    print("          seed: cipher, an integer 1 to 50. The same must be used for decode")
-    print("          The cipher needs to be transmitted seperatly to the recepient of the")
-    print("          the message as securely as is possible")
-    print("          infile: input file")
-    print("          outfile: output file")
+    print("          seed: cipher, an integer between 1 and 50. The same seed used to encode the")
+    print("                message must be used to decode the messageThe cipher needs to be tran-") 
+    print("                smitted seperatly to the recepient of the message as securely as is possible")
+    print("          inputFileName: input file")
+    print("          outputFileName: output file")
     print()
     sys.exit()
 
