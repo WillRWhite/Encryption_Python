@@ -18,10 +18,11 @@ def main() -> int:
     # Get user input
     if len(sys.argv) == 2 and sys.argv[1] in ["help","-help","--help","/help","h","-h","--h","/h"]:
         printUsage()
-    elif len(sys.argv) < 5:
+    elif len(sys.argv) < 6:
         try:
             encoding: str = input("Encode (e) or decode (d): ")
             seed: int = int(input("What is the seed (an int from 1 to 50): "))
+            seed2: int = int(input("What is the seed modifier (an int from 1 to 50): "))
             inputFileName = input("What is the name of the input file: ")
             outputFileName = input("What is the name of the output file: ")
         except:
@@ -30,8 +31,9 @@ def main() -> int:
         try:
             encoding: str = sys.argv[1]
             seed: int = int(sys.argv[2])
-            inputFileName = sys.argv[3]
-            outputFileName = sys.argv[4]
+            seed2: int = int(sys.argv[3])
+            inputFileName = sys.argv[4]
+            outputFileName = sys.argv[5]
         except:
             printUsage()
     
@@ -52,6 +54,7 @@ def main() -> int:
     else:
         print("Mode - decrypting", inputFileName)
     print("Cipher seed:", seed)
+    print("Cipher seed modifier:", seed2)
     print("Input file:", inputFileName)
     print("Output file:", outputFileName)
 
@@ -63,6 +66,8 @@ def main() -> int:
             if not char:
                 break
             char = encode(char,seed)
+            seed+=1
+            seed=seed%seed2
             outFile.write(char)
             
     # Decode the inFile
@@ -73,6 +78,8 @@ def main() -> int:
             if not char:
                 break
             char = decode(char,seed)
+            seed+=1
+            seed=seed%seed2
             outFile.write(char)
 
     return 0
@@ -126,14 +133,13 @@ def printUsage() -> None:
     print("        python encrypt.py")
     print()
     print("      Commandl ine parameters:")
-    print("         python encrypt.py <encode/decode> <seed> <inputFileName> <outputFileName>")
+    print("         python encrypt.py <encode/decode> <seed> ,seed mod> <inputFileName> <outputFileName>")
     print()
-    print("          encode/decode: 'e' = encode message file, 'd' = decode message file")
-    print("          seed: cipher, an integer between 1 and 50. The same seed used to encode the")
-    print("                message must be used to decode the messageThe cipher needs to be tran-") 
-    print("                smitted seperatly to the recepient of the message as securely as is possible")
-    print("          inputFileName: input file")
-    print("          outputFileName: output file")
+    print("          encode/decode:     'e' = encode message file, 'd' = decode message file")
+    print("          seed:              cipher, an integer between 1 and 50")
+    print("          seed mod:          cipher modifier, a second integer between 1 and 50")
+    print("          inputFileName:     input file")
+    print("          outputFileName:    output file")
     print()
     sys.exit()
 
